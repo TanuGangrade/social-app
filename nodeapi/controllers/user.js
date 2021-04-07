@@ -6,8 +6,10 @@ exports.userById=(req,res,next,id)=>{//id takes thes val of userId
     User.findById(id).exec((err,user)=>{
 
         if(err||!user){
-            return res.send("user not found");
-        }
+            return res.status(400).json({
+                error: 'User not found'
+            });
+          }
 
         req.profile=user; // adds profile info in req for the requested id
         next();
@@ -30,7 +32,7 @@ exports.allUsers=(req,res)=>{
             return res.json({error:err})
         }
 
-        res.send(users)
+        res.json(users)
     }).select("name email updated created ")
 }
 

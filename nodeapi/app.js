@@ -9,6 +9,9 @@ const fs=require("fs")
  const cors=require('cors')
 
 const app=express();
+
+app.use(cors())
+
 app.use(express.urlencoded({ extended: true }));//bodyparser
 app.use(express.json());
 
@@ -33,7 +36,7 @@ mongoose.connection.on('error', err => {
 
 
 
-app.listen(8000,()=>{
+app.listen(8080,()=>{
     console.log("493151 864 1491");
 })
 //-----------------------------------------------------------
@@ -57,12 +60,11 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use(cors())
 
 
 //for error during unautherised 
 app.use(function (err, req, res, next) {
   if (err.name === 'UnauthorizedError') {
-    res.status(401).send('ur not alloud gae');
+    res.status(401).send('ur not alowud here');
   }
 });
