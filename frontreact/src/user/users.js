@@ -47,7 +47,7 @@ class Users extends Component{
                     <div className="row">
                         {users.map((user, i) => (
                             <div className="card  m-3" style={{width: "18rem"}} key={i}>
-                            <img src={`${ process.env.REACT_APP_API_URL}/user/photo/${user._id}`} style={{width:"300px"}} className="img-thumbnail" alt={user.name}
+                            <img src={`${ process.env.REACT_APP_API_URL}/user/photo/${user._id}`} style={{width:"300px", height:"300px"}} className="img-thumbnail" alt={user.name}
                                 onError={i=>{i.target.src=`${DefaultProfile}`}}
                             />
 

@@ -3,15 +3,46 @@ import { isAuthenticated } from "../auth";
 import { Redirect,Link } from "react-router-dom";
 import DefaultProfile from "../images/UserAvatar.png";
 import DeleteUser from "./deleteUser"
+import FollowProfileButton from "./FollowProfileButton"
+
 
 class Profile extends Component{ 
     constructor() {
         super();
         this.state = {
-            user: "",
-            redirectToSignin: false
+            user: { following: [], followers: [] },
+            redirectToSignin: false,
+            following: false,
+            error: ""
         };
     }
+
+
+    checkFollow = user => {
+        const jwt = isAuthenticated();
+        const match = user.followers.find(follower => {
+            // one id has many other ids (followers) and vice versa
+            return follower._id === jwt.user._id;
+        });
+        return match;
+    };
+
+    clickFollowButton = callApi => {// call api is the follow ir unfollow methd gotten from FollowProfileButton.js
+        const userId = isAuthenticated().user._id;
+        const token = isAuthenticated().token;
+
+        callApi(userId, token, this.state.user._id)
+        .then(data => {
+            if (data.error) {
+                this.setState({ error: data.error });
+            } else {
+                this.setState({ user: data, following: !this.state.following });// if button is follow we make it unfollow and vise wersa
+            }
+        });
+    };
+
+    
+
 
  init=(userId)=>{
         fetch(`${process.env.REACT_APP_API_URL}/user/${userId}`, {
@@ -29,7 +60,8 @@ class Profile extends Component{
             if (data.error) {
                 this.setState({ redirectToSignin: true });//if wrong url then it is directed to signin 
             } else {
-                this.setState({ user: data });
+                let following = this.checkFollow(data);
+                this.setState({ user: data, following:following });
             }
         })
         .catch(err=>console.log(err))
@@ -67,7 +99,7 @@ class Profile extends Component{
 
                 <div className="row">
                     <div className="col-md-6">
-                    <img src={photoURL} style={{width:"300px"}} className="img-thumbnail"
+                    <img src={photoURL} style={{width:"300px",height:"300px"}} className="img-thumbnail"
                      alt={this.state.user.name} onError={i=>{i.target.src=`${DefaultProfile}`}}
 />
                   
@@ -75,14 +107,14 @@ class Profile extends Component{
 
                     <div className="col-md-6 mt-3">
                     <div className="lead mt-5 ml-5">
-                        <p>Hello {user.name}</p>
+                        <p>Hi ! I'm {user.name}</p>
                         <p>Email: {user.email}</p>
                         <p>{`Joined ${new Date(
                             this.state.user.created
                         ).toDateString()}`}</p>
                     </div>
                         {isAuthenticated().user &&// if the user is auth then local storage will exist
-                            isAuthenticated().user._id === this.state.user._id && (
+                            isAuthenticated().user._id === this.state.user._id ? (
                                 <div className="d-inline-block mt-5 mb-5">
                                     <Link
                                         className="btn btn-raised btn-success mr-5"
@@ -94,7 +126,9 @@ class Profile extends Component{
                                         <DeleteUser userId={user._id}/>
                                    
                                 </div>
-                            )}
+                            ):
+                            <FollowProfileButton following={this.state.following} onButtonClick={this.clickFollowButton} />
+                            }
                     </div>
                 </div>
                 <div className="row">

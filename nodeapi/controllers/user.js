@@ -8,7 +8,6 @@ exports.userById=(req,res,next,id)=>{//id takes thes val of userId
     User.findById(id)
     .populate('following','_id name')// what you wanna populate and what fields you want to populate
     .populate('followers','_id name')// what you wanna populate and what fields you want to populate
-    
     .exec((err,user)=>{
 
         if(err||!user){
