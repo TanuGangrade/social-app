@@ -1,5 +1,5 @@
 export const follow = (userId, token, followId) => {//followID is of the user on whos page we are on
-    return fetch(`${process.env.REACT_APP_API_URL}/user/follow`, {
+    return fetch(`${process.env.REACT_APP_API_URL}/user/follow/${userId}`, {
         method: "PUT",
         headers: {
             Accept: "application/json",
@@ -15,7 +15,7 @@ export const follow = (userId, token, followId) => {//followID is of the user on
 };
 
 export const unfollow = (userId, token, unfollowId) => {
-    return fetch(`${process.env.REACT_APP_API_URL}/user/unfollow`, {
+    return fetch(`${process.env.REACT_APP_API_URL}/user/unfollow/${userId}`, {
         method: "PUT",
         headers: {
             Accept: "application/json",

@@ -10,8 +10,8 @@ router.get('/user/:userId',requireSignin,getUser)
 router.put('/user/:userId',requireSignin,updateUser)
 router.delete('/user/:userId',requireSignin,deleteUser)
 router.get("/user/photo/:userId",userPhoto)
-router.put('/user/follow', requireSignin,addFollowing, addFollower )
-router.put('/user/unfollow', requireSignin,removeFollowing, removeFollower )
+router.put('/user/follow/:userId', requireSignin,addFollowing, addFollower )
+router.put('/user/unfollow/:userId', requireSignin,removeFollowing, removeFollower )
 
 //authorization 
 //userById() will execute whenever we encounter a parameter 
