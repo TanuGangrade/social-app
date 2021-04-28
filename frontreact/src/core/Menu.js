@@ -70,9 +70,9 @@ const Menu = ({ history }) => (
               {/*to display name of current user */}
             
               <li className="nav-item ml-auto">
-               <Link  className="nav-link" to={"/user/"+isAuth().founduser._id} style={{color:'white'}}
-                      style={(isActive(history, "/user/"+isAuth().founduser._id))}>
-                      {isAuth().founduser.name}'s profile 
+               <Link  className="nav-link" to={"/user/"+isAuth().user._id} style={{color:'white'}}
+                      style={(isActive(history, "/user/"+isAuth().user._id))}>
+                      {isAuth().user.name}'s profile 
                 </Link>
                 </li>
 

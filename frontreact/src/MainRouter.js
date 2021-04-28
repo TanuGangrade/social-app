@@ -6,18 +6,22 @@ import Signin from './user/signin'
 import Menu from './core/Menu'
 import Profile from './user/profile'
 import Users from './user/users'
+import editProfile from './user/editProfile'
+import PrivateRoute from './auth/PrivateRoute'
 
 
 const MainRouter=()=>(
     <div>
     <Menu/>
-        <Switch>
+    <Switch>
             <Route exact path='/' component={Home}></Route>
             <Route exact path='/users' component={Users}></Route>
             <Route exact path='/signup' component={Signup}></Route>
             <Route exact path='/signin' component={Signin}></Route>
-            <Route exact path='/user/:userId' component={Profile}></Route>
-        </Switch>
+            <PrivateRoute exact path='/user/:userId' component={Profile}></PrivateRoute>
+            <PrivateRoute exact path='/user/edit/:userId' component={editProfile}></PrivateRoute>
+   
+    </Switch>
     </div>
 )
 

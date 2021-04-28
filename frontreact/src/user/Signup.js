@@ -1,4 +1,5 @@
 import React, { Component }  from 'react'
+import { Link } from 'react-router-dom';
 
 class Signup extends Component {
     constructor() {
@@ -70,7 +71,7 @@ render()
             </div>
 
             <div className="alert alert-success" style={{display:open?"":"none"}}>
-                New account made! Please signin
+                New account made! Please <Link to="/signin">Login</Link>
             </div>
             <form>
                 <div className="form-group">

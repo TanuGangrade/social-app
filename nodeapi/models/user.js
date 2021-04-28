@@ -28,7 +28,26 @@ const userSchema=new mongoose.Schema({
         default:Date.now
     },
 
-    updated:Date
+    updated:Date,
+
+    photo:{
+        data:Buffer,
+        contentType:String
+    },
+    about:{
+        type:String,
+        trim:true
+    },
+
+    following:[{
+        type:mongoose.Schema.ObjectId,
+        ref:"User"
+    }],
+
+    followers:[{
+        type:mongoose.Schema.ObjectId,
+        ref:"User"
+    }] 
 })
 
 //virtual field for password: virtual fields are additional fields for a model schema

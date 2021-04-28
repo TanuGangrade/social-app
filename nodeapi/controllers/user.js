@@ -1,9 +1,15 @@
 const User=require('../models/user')
 const _ = require("lodash");
+const formidable = require('formidable');
+const fs=require("fs")//filesystem
 
 exports.userById=(req,res,next,id)=>{//id takes thes val of userId
 
-    User.findById(id).exec((err,user)=>{
+    User.findById(id)
+    .populate('following','_id name')// what you wanna populate and what fields you want to populate
+    .populate('followers','_id name')// what you wanna populate and what fields you want to populate
+    
+    .exec((err,user)=>{
 
         if(err||!user){
             return res.status(400).json({
@@ -42,21 +48,40 @@ exports.getUser = (req, res) => {
     return res.json(req.profile);
 };
 
+
 exports.updateUser = (req, res, next) => {
-    let user = req.profile;
-    user = _.extend(user, req.body); // extend - update the person info w more info
-    user.updated = Date.now();
-    user.save(err => {
+    let form = new formidable.IncomingForm();
+    form.keepExtensions = true;
+    form.parse(req, (err, fields, files) => {
         if (err) {
             return res.status(400).json({
-                error: "You are not authorized to perform this action"
+                error: "Photo could not be uploaded"
             });
         }
-        user.hashed_password = undefined;
-        user.salt = undefined;
-        res.json({ user });
+        // save user
+        let user = req.profile; // anytime u have user if in url
+        
+        user = _.extend(user, fields);
+        user.updated = Date.now();
+
+        if (files.photo) {
+            user.photo.data = fs.readFileSync(files.photo.path);
+            user.photo.contentType = files.photo.type;
+        }
+
+        user.save((err, result) => {
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                });
+            }
+            user.hashed_password = undefined;
+            user.salt = undefined;
+            res.json(user);
+        });
     });
 };
+
 
 exports.deleteUser = (req, res, next) => {
     let user = req.profile;
@@ -68,4 +93,76 @@ exports.deleteUser = (req, res, next) => {
         }
         res.json({ message: "User deleted successfully" });
     });
+};
+
+exports.userPhoto=(req,res,next)=>{
+    if(req.profile.photo.data){//user has uploaded profile
+
+        res.set(("Content-Type", req.profile.photo.contentType));
+        return res.send(req.profile.photo.data)
+    }
+    next();
+}
+
+exports.addFollowing = (req, res, next) => {
+    User.findByIdAndUpdate(req.body.userId,{ $push: { following: req.body.followId } },
+        (err, result) => {
+            if (err) {
+                return res.status(400).json({ error: err });
+            }
+            next();
+        }
+    );
+};
+
+exports.addFollower = (req, res) => {
+    User.findByIdAndUpdate(req.body.followId,{ $push: { followers: req.body.userId } },
+        { new: true }// once we update we want to show the new data and this is how we do that
+    )
+        .populate("following", "_id name")
+        .populate("followers", "_id name")
+        .exec((err, result) => {
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                });
+            }
+            result.hashed_password = undefined;
+            result.salt = undefined;
+            res.json(result);
+        });
+};
+
+// remove follow unfollow
+exports.removeFollowing = (req, res, next) => {
+    User.findByIdAndUpdate(
+        req.body.userId,
+        { $pull: { following: req.body.unfollowId } },
+        (err, result) => {
+            if (err) {
+                return res.status(400).json({ error: err });
+            }
+            next();
+        }
+    );
+};
+
+exports.removeFollower = (req, res) => {
+    User.findByIdAndUpdate(
+        req.body.unfollowId,
+        { $pull: { followers: req.body.userId } },
+        { new: true }
+    )
+        .populate("following", "_id name")
+        .populate("followers", "_id name")
+        .exec((err, result) => {
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                });
+            }
+            result.hashed_password = undefined;
+            result.salt = undefined;
+            res.json(result);
+        });
 };

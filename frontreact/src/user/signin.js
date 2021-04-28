@@ -36,7 +36,6 @@ class signin extends Component {
 
         this.signin(user)
 
-
         .then(data=>{//responce from nodeapi on making post req
             if (data.error) { //we do auth from node api, if error is found, it is stord in state and then the msg from nodeapi is displayed
                 this.setState({ error: data.error,loading:false });

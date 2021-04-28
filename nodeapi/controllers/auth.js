@@ -20,26 +20,26 @@ exports.signin=(req,res)=>{
 
     const {email, password}=req.body;
     //we try to find the user using email
-    User.findOne({email:email},(err,founduser)=>
+    User.findOne({email:email},(err,user)=>
     {
-        if(err||!founduser){
+        if(err||!user){
             return res.status(401).json({
                 error: 'User with that email does not exist. Please signup.'
             });        
         }
         //auth if pass match the email
-        if(!founduser.authenticate(password)){
+        if(!user.authenticate(password)){
             return res.status(401).json({
                 error: 'Email and password do not match'
             });
                 }
         //generate token using jwt
-        const token=jwt.sign({_id:founduser._id},process.env.JWT_SECRET)
+        const token=jwt.sign({_id:user._id},process.env.JWT_SECRET)
         //keept the token in cookie 't' , with expiry date
         res.cookie("t",token,{expire:new Date()+9999})
 
-        const {_id,name,email}=founduser
-        return res.json({token,founduser:{_id,name,email}});
+        const {_id,name,email}=user
+        return res.json({token,user:{_id,name,email}});
 
     }) 
 
