@@ -7,9 +7,10 @@ const _ = require("lodash");
 exports.getPosts = (req, res) => {
     const posts = Post.find()
         .populate("postedBy", "_id name")
-        .select("_id title body")
+        .select("_id title body created")
+        .sort({created:-1})//so the posts that are latest will come at the top
         .then(posts => {
-            res.json({ posts });
+            res.json(posts);
         })
         .catch(err => console.log(err));
 };
@@ -49,7 +50,7 @@ exports.createPost=(req,res)=>{
 }
 
 //--------------------------------------------------------------------------------
-
+//whenever therer is postId in url this is fired
 exports.postById = (req, res, next, id) => {// from router.param
     Post.findById(id)
         .populate("postedBy", "_id name")
@@ -122,3 +123,13 @@ exports.deletePost = (req, res) => {
         });        
     });
 };
+
+exports.photo=(req,res,next)=>{
+    res.set("Content-Type",req.post.photo.contentType);
+    return res.send(req.post.photo.data)
+    
+}
+
+exports.singlePost=(req,res)=>{
+    return res.json(req.post)
+}

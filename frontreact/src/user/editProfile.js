@@ -170,7 +170,7 @@ class editProfile extends Component {
     <div className="jumbotron text-center"><h2>Loading...</h2></div> 
     : ""}
 
-<img src={photoURL} style={{width:"300px"}} className="img-thumbnail" alt={this.state.name}
+<img src={photoURL} style={{width:"300px",objectFit: "cover"}} className="img-thumbnail" alt={this.state.name}
   onError={i=>{i.target.src=`${DefaultProfile}`}}
 
 />

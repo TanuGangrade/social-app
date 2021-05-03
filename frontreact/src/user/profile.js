@@ -4,7 +4,7 @@ import { Redirect,Link } from "react-router-dom";
 import DefaultProfile from "../images/UserAvatar.png";
 import DeleteUser from "./deleteUser"
 import FollowProfileButton from "./FollowProfileButton"
-
+import ProfileTabs from "./ProfileTabs"
 
 class Profile extends Component{ 
     constructor() {
@@ -99,9 +99,9 @@ class Profile extends Component{
 
                 <div className="row">
                     <div className="col-md-6">
-                    <img src={photoURL} style={{width:"300px",height:"300px"}} className="img-thumbnail"
+                    <img src={photoURL} style={{width:"300px",height:"300px" ,objectFit: "cover"}} className="img-thumbnail"
                      alt={this.state.user.name} onError={i=>{i.target.src=`${DefaultProfile}`}}
-/>
+                    />
                   
                     </div>
 
@@ -114,7 +114,8 @@ class Profile extends Component{
                         ).toDateString()}`}</p>
                     </div>
                         {isAuthenticated().user &&// if the user is auth then local storage will exist
-                            isAuthenticated().user._id === this.state.user._id ? (
+                            isAuthenticated().user._id === this.state.user._id
+                             ? (
                                 <div className="d-inline-block mt-5 mb-5">
                                     <Link
                                         className="btn btn-raised btn-success mr-5"
@@ -129,6 +130,7 @@ class Profile extends Component{
                             ):
                             <FollowProfileButton following={this.state.following} onButtonClick={this.clickFollowButton} />
                             }
+                            
                     </div>
                 </div>
                 <div className="row">
@@ -136,6 +138,9 @@ class Profile extends Component{
                         <hr />
                         <p className="lead">{user.about}</p>
                         <hr />
+                      
+                        <ProfileTabs followers={this.state.user.followers} following={this.state.user.following}/>
+                
                     </div>
                 </div>
             </div>

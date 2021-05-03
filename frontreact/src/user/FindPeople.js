@@ -1,37 +1,53 @@
 import React, { Component } from "react";
 import DefaultProfile from "../images/UserAvatar.png";
 import {Link} from 'react-router-dom'
+import{findPeople,follow} from "./apiUser"
+import {isAuthenticated} from '../auth'
 
-class Users extends Component{
+class FindPeople extends Component{
 
         constructor() {
             super();
             this.state = {
-                users: []
+                users: [],
+                error:"",
+                open:false
             };
         }
        
 
-     componentDidMount() {
-        return fetch(`${process.env.REACT_APP_API_URL}/users`, {
-            method: "GET"
-        })
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
+        componentDidMount() {
+            const userId = isAuthenticated().user._id;
+            const token = isAuthenticated().token;
+    
+            findPeople(userId, token).then(data => {
                 if (data.error) {
                     console.log(data.error);
                 } else {
                     this.setState({ users: data });
                 }
-            })
-            .catch(err => console.log(err));
-
+            });
         }
 
-
-
+        clickFollow = (user, i) => {
+            const userId = isAuthenticated().user._id;
+            const token = isAuthenticated().token;
+    
+            follow(userId, token, user._id).then(data => {
+                if (data.error) { 
+                    this.setState({ error: data.error });
+                } 
+                else {
+                    let toFollow = this.state.users;
+                    toFollow.splice(i, 1);//splice out the user who we clicked
+                    this.setState({//ovewrite
+                        users: toFollow,
+                        open: true,
+                        followMessage: `Following ${user.name}`
+                    });
+                }
+            });
+        };
 
     render() {
         const { users } = this.state;
@@ -56,7 +72,16 @@ class Users extends Component{
                                     <p className="card-text">{user.email}</p>
                                     <Link to={`/user/${user._id}`}
                                     className="btn btn-dark btn-raised btn-sm">View</Link>
-                                </div>
+                               
+                               
+
+                                <button
+                                onClick={() => this.clickFollow(user, i)}
+                                className="btn btn-raised btn-info float-right btn-sm"
+                                 >
+                                Follow
+                                 </button>
+                                 </div> 
                             </div>
                         ))}
                     </div>
@@ -65,4 +90,4 @@ class Users extends Component{
     }
 }
 
-export default Users
+export default FindPeople

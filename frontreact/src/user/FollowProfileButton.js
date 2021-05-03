@@ -23,7 +23,7 @@ class FollowProfileButton extends Component {
                 ) : (
                     <button
                         onClick={this.unfollowClick}
-                        className="btn btn-info btn-raised"
+                        className="btn btn-outline-info m-5" style={{borderColor:"#ff6699", color:"red"}}
                     >
                         UnFollow
                     </button>

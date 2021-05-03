@@ -65,8 +65,30 @@ const Menu = ({ history }) => (
             </>
             )}
             
+
+
             {isAuth() &&(
             <>
+            <li className="nav-item">
+                        <Link
+                            to={`/findpeople`}
+                            style={isActive(history, `/findpeople`)}
+                            className="nav-link"
+                        >
+                            Find People
+                        </Link>
+            </li>
+
+            <li className="nav-item">
+                        <Link
+                            to={`/post/create`}
+                            style={isActive(history, `/post/create`)}
+                            className="nav-link"
+                        >
+                            Create 
+                        </Link>
+            </li>
+
               {/*to display name of current user */}
             
               <li className="nav-item ml-auto">
