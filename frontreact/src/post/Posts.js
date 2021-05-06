@@ -37,7 +37,7 @@ class Posts extends Component {
                                     onError={i =>
                                         (i.target.src = `${DefaultPost}`)
                                     }
-                                    className="img-thunbnail" style={{width:"300px", height:"300px",objectFit: "cover"}}
+                                    className="img-thunbnail" style={{width:"100%", height:"300px",objectFit: "cover"}}
                                 />
                                 <div className="card-body">
                                 <h5 className="card-title">{post.title}</h5>

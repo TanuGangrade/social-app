@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import DefaultProfile from "../images/UserAvatar.png";
+import DefaultPost from "../images/mountains.jpg";
 
 class ProfileTabs extends Component {
     render() {
-        const { following, followers } = this.props;
+        const { following, followers ,posts} = this.props;
         return (
             <div>
                 <div className="row">
@@ -18,7 +19,7 @@ class ProfileTabs extends Component {
                                         <img
                                             style={{
                                                 borderRadius: "50%",
-                                                border: "3px solid blue"
+                                                border: "3px solid pink"
                                             }}
                                             className="float-left mr-2"
                                             height="30px"
@@ -79,6 +80,34 @@ class ProfileTabs extends Component {
                     <div className="col-md-4">
                         <h3 className="text-info">Posts</h3>
                         <hr />
+                        {posts.map((post, i) => (
+                            <div key={i}>
+                                <div>
+                                <Link to={`/post/${post._id}`}>
+                                        <img
+                                            style={{
+                                                border: "3px solid black"
+                                            }}
+                                            className="float-left mr-2"
+                                            height="40px"
+                                            width="40px"
+                                            onError={i =>
+                                                (i.target.src = `${DefaultPost}`)
+                                            }
+                                            src={`${
+                                                process.env.REACT_APP_API_URL
+                                            }/post/photo/${post._id}`}
+                                            alt={post.name}
+                                        />
+                                        <div>
+                                            <p className="lead">
+                                                {post.title}
+                                            </p>
+                                        </div>
+                                    </Link>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

@@ -5,7 +5,7 @@ import DefaultProfile from "../images/UserAvatar.png";
 import DeleteUser from "./deleteUser"
 import FollowProfileButton from "./FollowProfileButton"
 import ProfileTabs from "./ProfileTabs"
-
+import {listByUser} from '../post/apiPost'
 class Profile extends Component{ 
     constructor() {
         super();
@@ -13,7 +13,8 @@ class Profile extends Component{
             user: { following: [], followers: [] },
             redirectToSignin: false,
             following: false,
-            error: ""
+            error: "",
+            posts:[]
         };
     }
 
@@ -62,12 +63,23 @@ class Profile extends Component{
             } else {
                 let following = this.checkFollow(data);
                 this.setState({ user: data, following:following });
+                this.loadPosts(data._id)//this is gonna pass user id to the listByUser so that we can display posts for a perticular user
             }
         })
         .catch(err=>console.log(err))
 
     }
     
+    loadPosts = userId => {
+        const token = isAuthenticated().token;
+        listByUser(userId, token).then(data => {
+            if (data.error) {
+                console.log(data.error);
+            } else {
+                this.setState({ posts: data });
+            }
+        });
+    };
 
     componentDidMount() {
        const userId = this.props.match.params.userId;//to get the user id from the url
@@ -117,6 +129,14 @@ class Profile extends Component{
                             isAuthenticated().user._id === this.state.user._id
                              ? (
                                 <div className="d-inline-block mt-5 mb-5">
+                                <Link
+                                    className="btn btn-raised btn-info mr-5"
+                                    to={`/post/create`}
+                                >
+                                    Create Post
+                                </Link>                    
+
+
                                     <Link
                                         className="btn btn-raised btn-success mr-5"
                                         to={`/user/edit/${this.state.user._id}`}
@@ -139,7 +159,7 @@ class Profile extends Component{
                         <p className="lead">{user.about}</p>
                         <hr />
                       
-                        <ProfileTabs followers={this.state.user.followers} following={this.state.user.following}/>
+                        <ProfileTabs followers={this.state.user.followers} following={this.state.user.following} posts={this.state.posts}/>
                 
                     </div>
                 </div>
