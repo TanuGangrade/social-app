@@ -50,9 +50,19 @@ const Menu = ({ history }) => (
                     Users
                 </Link>
             </li>
+            <li className="nav-item">
+                        <Link
+                            to={`/post/create`}
+                            style={isActive(history, `/post/create`)}
+                            className="nav-link"
+                        >
+                            Create 
+                        </Link>
+            </li>
+
             {!isAuth() &&(
                 <>
-                <li className="nav-item">
+                <li className="nav-item ml-auto">
                 <Link className="nav-link" style={isActive(history, "/signin")} to="/signin">
                     Login
                 </Link>
@@ -79,15 +89,6 @@ const Menu = ({ history }) => (
                         </Link>
             </li>
 
-            <li className="nav-item">
-                        <Link
-                            to={`/post/create`}
-                            style={isActive(history, `/post/create`)}
-                            className="nav-link"
-                        >
-                            Create 
-                        </Link>
-            </li>
 
               {/*to display name of current user */}
             

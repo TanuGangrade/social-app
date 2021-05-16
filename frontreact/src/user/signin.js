@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 class signin extends Component {
     constructor() {
@@ -114,6 +115,7 @@ class signin extends Component {
 
 
                 {this.signinForm(email, password)}
+                <Link to="/signup"><h3 >Sign up if you dont have an account!</h3></Link>
             </div>
         );
     }

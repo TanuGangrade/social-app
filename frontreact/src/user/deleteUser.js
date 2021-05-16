@@ -38,7 +38,6 @@ remove = (userId, token) => {
                 this.setState({ redirect: true });
             }
         });
-        console.log("ak");
     };
 
     deleteConfirmed = () => {
