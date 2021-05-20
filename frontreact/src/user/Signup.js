@@ -1,5 +1,6 @@
 import React, { Component }  from 'react'
 import { Link } from 'react-router-dom';
+import SocialLogin from "./SocialLogin";
 
 class Signup extends Component {
     constructor() {
@@ -65,6 +66,10 @@ render()
     return(
         <div className="container  col-xl-4">
             <h2 className="mt-5 mb-5">SignUp!</h2>
+            <SocialLogin  />
+
+
+            <h2 className="mt-5 mb-3" >Or</h2>
 
             <div className="alert alert-danger" style={{display:error?"":"none"}}>
                 {error}
