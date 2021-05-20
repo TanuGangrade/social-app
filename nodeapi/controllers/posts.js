@@ -8,7 +8,7 @@ exports.getPosts = (req, res) => {
     const posts = Post.find()
         .populate("postedBy", "_id name")
         .populate("comments","text created")
-        .populate("comments.postedBy",'_id name')
+        //.populate("comments.postedBy",'_id name')
         .select("_id title body created likes")
         .sort({created:-1})//so the posts that are latest will come at the top
         .then(posts => {

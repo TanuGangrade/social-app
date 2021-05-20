@@ -116,6 +116,12 @@ class signin extends Component {
 
                 {this.signinForm(email, password)}
                 <Link to="/signup"><h3 >Sign up if you dont have an account!</h3></Link>
+                <p>
+                <Link to="/forgot-password" className="text-danger">
+               <h4> Forgot Password</h4>
+             </Link>
+</p>
+
             </div>
         );
     }

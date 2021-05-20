@@ -47,7 +47,12 @@ const userSchema=new mongoose.Schema({
     followers:[{
         type:mongoose.Schema.ObjectId,
         ref:"User"
-    }] 
+    }],
+
+    resetPasswordLink: {
+        data: String,
+        default: ""
+    }
 })
 
 //virtual field for password: virtual fields are additional fields for a model schema
