@@ -6,13 +6,13 @@ const postSchema=new mongoose.Schema({
         type:String,
         required:"required",
         maxlength:30,
-        minlength:4
+        minlength:1
     },
     body:{
         type:String,
         required:"needeeeeed",
         maxlength:2000,
-        minlength:4
+        minlength:1
     },
 
     photo:{

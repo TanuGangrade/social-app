@@ -129,7 +129,7 @@ class SinglePost extends Component{
                     </h3>
                 )}
 
-                <p className="font-italic mark">
+                <p className="font-italic ">
                     Posted by <Link to={`${posterId}`}>{posterName} </Link>
                     on {new Date(post.created).toDateString()}
                 </p>

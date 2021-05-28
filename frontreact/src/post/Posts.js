@@ -57,16 +57,16 @@ class Posts extends Component {
                                 <div className="card-body">
                                 <h5 className="card-title">{post.title}</h5>
                                 <p className="card-text">
-                                    {post.body.substring(0, 100)}
+                                    {post.body.substring(0, 100)}...
                                 </p>
                                 <br />
                                 
-                                <p className="font-italic mark">
+                                <p className="font-italic ">
                                     Posted by{" "}
                                     <Link to={`${posterId}`}>
                                         {posterName}{" "}
                                     </Link>
-                                    on {new Date(post.created).toDateString()}
+                                    
                                 </p>
                                 <Link
                                     to={`/post/${post._id}`}
